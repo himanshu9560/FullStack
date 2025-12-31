@@ -3,6 +3,7 @@ import useFetch from "../Hooks/use-fetch";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { BarLoader } from "react-spinners";
+import JobCard from "../components/job-card";
 
 
 const JobListing = () => {
@@ -16,7 +17,7 @@ const JobListing = () => {
 
   const {
     fn: fnJobs, 
-    data: dataJobs, 
+    data: jobs, 
     loading: loadingJobs 
   } = useFetch(getJobs, {
     location,
@@ -35,7 +36,30 @@ const JobListing = () => {
 
   return (
   <div>
-    <h1 className="bg-gradient-to-br from-gray-500 via-gray-200 to-white gradient text-transparent bg-clip-text font-extrabold text-6xl sm:text-7xl text-center pb-8">Latest Job</h1>
+    <h1 className="bg-linear-to-br from-gray-500 via-gray-200 to-white gradient text-transparent bg-clip-text 
+    font-extrabold text-6xl sm:text-7xl text-center pb-8">Latest Job</h1>
+    
+    {loadingJobs && (
+      <BarLoader className="mt-4 " width={"100%"} color="#36d7b7"  />
+    )}
+    {loadingJobs === false &&(
+      <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {jobs?.length ? (
+          jobs.map((job) => {
+            return ( 
+                  <JobCard 
+                    key={job.id}
+                    job={job} 
+                    savedInit={job?.saved?.length > 0}
+                  />
+                 )
+          })
+        ) :(
+          <div>No Jobs found </div>
+        )
+      }
+      </div>
+    )}
   </div>
 
   )

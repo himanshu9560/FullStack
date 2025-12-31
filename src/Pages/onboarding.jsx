@@ -36,9 +36,9 @@ useEffect(() =>{
       <h2 className="bg-gradient-to-br from-gray-500 via-gray-200 to-white gradient text-transparent bg-clip-text text-7xl sm:text-8xl font-extrabold tracking-tight
   ">I am a...</h2>
   <div className="mt-16 grid grid-cols-2 gap-4 w-full md:px-40" onClick={()=> handleRoleSelection("candidate")}> 
-    <Button variant="blue" className="h-36 text-2xl">
+    <Button variant="blue" className="h-36 text-2xl cursor-pointer">
       Candidate</Button>
-      <Button variant="destructive" className="h-36 text-2xl" onClick={()=> handleRoleSelection("recruiter")}>
+      <Button variant="destructive" className="h-36 text-2xl cursor-pointer" onClick={()=> handleRoleSelection("recruiter")}>
       Recruiter</Button>
   </div>
     </div>

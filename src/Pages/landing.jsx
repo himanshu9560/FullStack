@@ -17,12 +17,12 @@ const LandingPage = () => {
             - Explore Thousand of Job Listing or Find The Perfect Candidate -
           </p>
         </section>
-        <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-          <Link to="/job">
-            <Button className="w-full sm:w-auto px-8 py-8 rounded-lg bg-blue-500">Find Jobs</Button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
+          <Link to="/job" className="w-full sm:w-[220px]">
+            <Button variant="blue" size="xl" className='w-full cursor-pointer'>Find Jobs</Button>
           </Link>
-          <Link to="/post-job">
-            <Button className="w-full sm:w-auto px-8 py-8 rounded-lg bg-red-500">Post a Jobs</Button>
+          <Link to="/post-job" className="w-full sm:w-[220px]">
+            <Button variant="destructive" size="xl" className='w-full cursor-pointer'>Post a Jobs</Button>
           </Link>
         </div>
         
