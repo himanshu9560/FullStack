@@ -1,5 +1,5 @@
-import { createClient } from '@supabase/supabase-js'
-// import getSupabaseClient from "../utils/supabase.js"
+// import { getSupabaseClient } from "../utils/supabase";
+import { createClient } from "@supabase/supabase-js";
 
 export async function getJobs(token, {location, company_id, searchQuery }) {
     const supabase = await getSupabaseClient(token);
@@ -38,7 +38,7 @@ export async function saveJob(token, {alreadySaved }, saveData) {
             .delete()
             .eq("job_id", saveData.job_id);
                if (deleteError){
-                 console.error("Error Deleting Saved Job", error);
+                 console.error("Error Deleting Saved Job", deleteError);
                 return null;
     }
     return data;
@@ -53,6 +53,84 @@ export async function saveJob(token, {alreadySaved }, saveData) {
     }
     return data
     }
+}
 
-   
+export async function getSingleJob(token, {job_id}) {
+      const supabase = await getSupabaseClient(token);
+
+         const { data, error } = await supabase
+            .from("jobs")
+            .select("*, comapny:companies(name, logo_url, applications: applications(*)")
+            .eq("id", job_id)
+            .single()
+
+               if (error){
+                 console.error("Error Fetching Job", error);
+                return null;
+    }
+    return data
+}
+
+export async function updateHiringStatus(token, {job_id}, isOpen) {
+      const supabase = await getSupabaseClient(token);
+
+         const { data, error } = await supabase
+            .from("jobs")
+            .update({isOpen})
+            .eq("id", job_id)
+            .select()
+
+               if (error){
+                 console.error("Error Updating Job", error);
+                return null;
+    }
+    return data
+}
+
+
+
+    export async function addNewJob(token, _, jobData) {
+      const supabase = await getSupabaseClient(token);
+
+         const { data, error } = await supabase
+            .from("jobs")
+            .insert([jobData])
+            .select()
+
+               if (error){
+                 console.error("Error Creating Job", error);
+                return null;
+    }
+    return data
+}
+
+
+export async function getMyJob(token, { recruiter_id }) {
+      const supabase = await getSupabaseClient(token);
+
+         const { data, error } = await supabase
+            .from("jobs")
+            .select("*, company:companies(name, logo_url)")
+            .eq("recruiter_id", recruiter_id);
+
+               if (error){
+                 console.error("Error Fetching Jobs:", error);
+                return null;
+    }
+    return data
+}
+export async function deleteJob(token, { job_id }) {
+      const supabase = await getSupabaseClient(token);
+
+         const { data, error } = await supabase
+            .from("jobs")
+            .delete()
+            .eq("id", job_id)
+            select();
+
+               if (error){
+                 console.error("Error Deleting Job:", error);
+                return null;
+    }
+    return data
 }

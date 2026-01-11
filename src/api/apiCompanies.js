@@ -1,5 +1,7 @@
-// import { getSupabaseClient } from "@utils/supabase";
 import { createClient } from "@supabase/supabase-js";
+
+// import { getSupabaseClient } from "../utils/supabase";
+import { supabaseUrl } from "../utils/supabase";
 
 export async function getCompanies(token) {
       const supabase = await getSupabaseClient(token);
@@ -9,6 +11,38 @@ export async function getCompanies(token) {
             .select("*")
                if (error){
                  console.error("Error Fetching Companies", error);
+                return null;
+    }
+    return data
+}
+
+export async function addNewCompany(token,_, companyData) {
+      const supabase = await getSupabaseClient(token);
+
+         const random =Math.floor(Math.random()* 90000);
+            const fileName = `logo-${random}-${companyData.name}`;
+      
+          const { error:storageError }= await supabase.storage 
+          .from("company-logo")
+          .upload(fileName, companyData.logo);
+         
+          if (storageError){
+               console.error("Error Uploading Company Logo", error);
+                  return null;
+          }
+               
+          const logo_url = `${supabaseUrl}/storage/v1/object/public/company-logo/${fileName}`
+
+         const { data, error } = await supabase
+            .from("companies")
+            .insert([{
+               name: companyData.name,
+               logo_url,
+            },
+         ])
+            .select()
+               if (error){
+                 console.error("Error Submitting Company", error);
                 return null;
     }
     return data
